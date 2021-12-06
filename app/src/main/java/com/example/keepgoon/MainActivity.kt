@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
+import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -53,8 +54,8 @@ class MainActivity : AppCompatActivity() {
         viewModel.getAll().observe(this) { users ->
             binding.rvView.layoutManager = LinearLayoutManager(this)
             userAdapter = UserAdapter(users)
+            binding.rvView.adapter = userAdapter
         }
-        binding.rvView.adapter = userAdapter
     }
 
 //        viewModel.getAll().observe(this) {
@@ -106,14 +107,20 @@ class MainActivity : AppCompatActivity() {
 
         binding.rvView.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
             override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
-                Log.d(TAG, "[MainActivity] -  rvView 터치 - onInterceptTouchEvent()")
+
+                val child: View? = binding.rvView.findChildViewUnder(e.x, e.y)
+                val position: Int? = child?.let { binding.rvView.getChildAdapterPosition(it) }
+
+                Log.d(TAG, "[MainActivity] -  rvView 터치 - onInterceptToaauchEvent() \n" +
+                        "터치한 position 확인 되나? $position")
+
+                position?.let { showDialog2(position) }
 
                 return true
             }
 
             override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {
                 Log.d(TAG, "[MainActivity] -  rvView 터치 - onTouchEvent()")
-                showDialog()
             }
 
             override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {
@@ -127,17 +134,21 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun showDialog() {
+    private fun showDialog2(position: Int) {
         // 다이얼로그를 생성하기 위해 Builder 클래스 생성자를 이용해 줍니다.
-        val builder = AlertDialog.Builder(this)
+        val builder = AlertDialog.Builder(this@MainActivity)
         builder.setTitle("삭제하시겠습니까?")
             .setMessage("진짜진짜?")
             .setPositiveButton("확인",
                 DialogInterface.OnClickListener { _, _ ->
-                    Log.d(TAG, "[MainActivity] - showDialog() - 확인누름")
+                    Log.d(TAG, "[MainActivity] - showDialog() - 확인누름 \n" +
+                            "전달받은 position: $position \n" +
+                            "item 확인: ${userAdapter.getItem()[position]}")
+                    val selecteUser = userAdapter.getItem()[position]
 
-                    //터치한 rvView 한개 데이터만 삭제
-
+                    CoroutineScope(Dispatchers.IO).launch {
+                        viewModel.deleteOne(selecteUser)
+                    }
                 })
             .setNegativeButton("취소",
                 DialogInterface.OnClickListener { dialog, id ->
