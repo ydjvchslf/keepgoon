@@ -26,6 +26,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:inputType="number"
             android:hint="나이 입력"/>
 
         <Button
@@ -33,7 +34,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="입력"/>
+            android:hint="추가"/>
     </LinearLayout>
 
     <Button
@@ -41,7 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:hint="삭제"/>
+        android:hint="모두삭제"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_view"

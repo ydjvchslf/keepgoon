@@ -41,6 +41,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textSize="20dp"
+                    android:textColor="#FF9800"
                     android:text="@{user.name}"
                     android:hint="이름"/>
 
@@ -50,7 +51,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textSize="20dp"
-                    android:text="@{user.age}"
+                    android:textColor="#FF9800"
+                    android:text="@{String.valueOf(user.age)}"
                     android:hint="나이"/>
 
             </LinearLayout>

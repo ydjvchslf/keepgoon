@@ -27,8 +27,12 @@ class UserRepository(application: Application) {
         userDao.update(user)
     }
 
-    fun delete(user: User){
-        userDao.delete(user)
+    fun deleteAll(){
+        userDao.deleteAll()
+    }
+
+    fun deleteOne(user: User){
+        userDao.deleteOne(user)
     }
 
     fun getAll(): LiveData<List<User>>{

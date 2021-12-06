@@ -1,6 +1,7 @@
 package com.example.keepgoon
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 
@@ -12,14 +13,30 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
     }
 
     private val repository = UserRepository(application)
-    private val items = repository.getAll() //retrun LiveData<List<User>>
+    private val items = repository.getAll() //return LiveData<List<User>> -> 옵저버 객체가 온다
 
-    fun insert(user: User){
+    fun insert(inputData: HashMap<String, Any>){
+
+        Log.d(TAG, "[UserViewModel] - insert() 호출")
+
+        val name = inputData[("name")]
+        val age = inputData[("age")]
+
+        val user = User(0, name as String, age as Int)
+
         repository.insert(user)
     }
 
-    fun delete(user: User){
-        repository.delete(user)
+    fun deleteAll(){
+        Log.d(TAG, "[UserViewModel] - deleteAll() 호출")
+
+        repository.deleteAll()
+    }
+
+    fun deleteOne(user: User){
+        Log.d(TAG, "[UserViewModel] - deleteOne() 호출")
+
+        repository.deleteOne(user)
     }
 
     fun getAll(): LiveData<List<User>> {

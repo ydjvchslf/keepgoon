@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.keepgoon.databinding.ItemUserBinding
 
@@ -24,6 +25,8 @@ class UserAdapter(val items: List<User>)
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_user, parent, false)
 
+
+
         return UserViewHolder(ItemUserBinding.bind(view)) //item_user 모양을 하는 뷰 홀더를 생성
     }
 
@@ -33,4 +36,8 @@ class UserAdapter(val items: List<User>)
     }
 
     override fun getItemCount(): Int = items.size
+
+    fun getItem(): List<User>{
+        return items
+    }
 }

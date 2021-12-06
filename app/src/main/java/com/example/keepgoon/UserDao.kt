@@ -11,7 +11,7 @@ interface UserDao {
         const val TAG: String = "LOG"
     }
 
-    @Query("SELECT * FROM users")
+    @Query("SELECT * FROM users ORDER BY id DESC")
     fun getAll(): LiveData<List<User>>
 
     @Insert
@@ -20,8 +20,11 @@ interface UserDao {
     @Update
     fun update(user: User)
 
+    @Query("DELETE FROM users")
+    fun deleteAll()
+
     @Delete
-    fun delete(user: User)
+    fun deleteOne(user: User)
 
 
 }
